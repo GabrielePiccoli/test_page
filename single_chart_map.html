@@ -62,6 +62,7 @@
   const mapIndex = getMapIndexFromURL();
   const iframe = document.getElementById("mapFrame");
   const select = document.getElementById("mapSelect");
+  const timeSelect = document.getElementById("timeSelect");
 
   // Popola il dropdown
   mapOptions.forEach((opt, idx) => {
@@ -74,7 +75,7 @@
   });
 
   // Imposta iframe iniziale
-  iframe.src = mapOptions[mapIndex].url;
+  iframe.src = set_url(mapOptions[mapIndex].url, select.options[select.selectedIndex].getAttribute("data-type"));
   adaptSelect()
   // Cambia mappa al cambio selezione
   select.addEventListener("change", () => {
@@ -83,28 +84,34 @@
     adaptSelect()
   });
 
+  timeSelect.addEventListener("change", () =>{
+      iframe.src = set_url(select.value, select.options[select.selectedIndex].getAttribute("data-type"));
+      iframe.scrolling = "no";
+      adaptSelect()
+  });
+
   function adaptSelect(){
     const selectedOption = select.options[select.selectedIndex];
     const selectedType = selectedOption.getAttribute("data-type");
 
     if (selectedType === "map") {
-      document.getElementById("mapSelect").style.width = "70%";
-      document.getElementById("timeSelect").style.display = "block";
-      document.getElementById("timeSelect").style.width = "30%";
+      select.style.width = "70%";
+      timeSelect.style.display = "block";
+      timeSelect.style.width = "30%";
     } else {
-      document.getElementById("mapSelect").style.width = "100%";
-      document.getElementById("timeSelect").style.display = "none";
+      select.style.width = "100%";
+      timeSelect.style.display = "none";
     }
   }
 
   function set_url(base_url, selectedType){
     if (selectedType === "map") {
-      const timeSelect = document.getElementById("timeSelect").value;
-      console.log(base_url)
-      url = base_url + "_" + timeSelect + ".html";
+      const selectedTime = timeSelect.value;
+      url = base_url + "_" + selectedTime + ".html";
     }else{
       url = base_url + ".html";
     }
+    console.log(url);
     return url
   }
   </script>
