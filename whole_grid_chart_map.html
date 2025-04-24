@@ -61,33 +61,13 @@
 <div id="mapsWrapper"></div>
 
 <script>
-  const mapOptions = [
-    { name: "Mappa 1", url: "https://gabrielepiccoli.github.io/test_page/heatmap_1.html" },
-    { name: "Mappa 2", url: "https://gabrielepiccoli.github.io/test_page/heatmap_2.html" },
-    { name: "Mappa 3", url: "https://gabrielepiccoli.github.io/test_page/heatmap_3.html" },
-    { name: "Mappa 4", url: "https://gabrielepiccoli.github.io/test_page/heatmap.html" },
-    { name: "Grafico 1", url: "https://lookerstudio.google.com/embed/reporting/b54a3a10-5148-4dc7-bd08-2b7140fa78aa/page/mS6HF"},
-    { name: "Grafico 2", url: "https://lookerstudio.google.com/embed/reporting/321f4b6a-079b-459b-a979-d164dd48aa71/page/mS6HF" },
-    { name: "Grafico 3", url: "https://lookerstudio.google.com/embed/reporting/40fa0638-a0dd-4fea-b7e8-049a73a8ae49/page/mS6HF" },
-    { name: "Grafico 4", url: "https://lookerstudio.google.com/embed/reporting/c6b9be92-3896-4370-a2fc-06a4150f350a/page/mS6HF" },
-  ];
-  const numberOfBlocks = 4;
+const numberOfBlocks = 4;
 const wrapper = document.getElementById("mapsWrapper");
-
+const numbers = [0,4,5,2]
 function createMapBlock(index) {
   const mapBlock = document.createElement("div");
   mapBlock.className = "map-block";
-
-  const select = document.createElement("select");
-  const initialURL = mapOptions[index % mapOptions.length].url;
-
-  mapOptions.forEach(opt => {
-    const option = document.createElement("option");
-    option.value = opt.url;
-    option.textContent = opt.name;
-    if (opt.url === initialURL) option.selected = true;
-    select.appendChild(option);
-  });
+  const initialURL = "https://gabrielepiccoli.github.io/test_page/single_chart_map.html?map="+ numbers[index];
 
   const container = document.createElement("div");
   container.className = "map-container";
@@ -103,12 +83,7 @@ function createMapBlock(index) {
   iframe.width="694";
   iframe.height="429";
 
-  select.addEventListener("change", () => {
-    iframe.src = select.value; //+ "?v=" + new Date().getTime();
-  });
-
   container.appendChild(iframe);
-  mapBlock.appendChild(select);
   mapBlock.appendChild(container);
   wrapper.appendChild(mapBlock);
 }

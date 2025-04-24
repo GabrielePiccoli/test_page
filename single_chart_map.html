@@ -79,6 +79,7 @@
   adaptSelect()
   // Cambia mappa al cambio selezione
   select.addEventListener("change", () => {
+    timeSelect.value = 0
     iframe.src = set_url(select.value, select.options[select.selectedIndex].getAttribute("data-type"));
     iframe.scrolling = "no";
     adaptSelect()
