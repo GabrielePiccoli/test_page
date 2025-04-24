@@ -26,14 +26,7 @@
 </head>
 <body>
   <select id="mapSelect">
-    <option value="https://gabrielepiccoli.github.io/test_page/heatmap_1.html">Mappa 1</option>
-    <option value="https://gabrielepiccoli.github.io/test_page/heatmap_2.html">Mappa 2</option>
-    <option value="https://gabrielepiccoli.github.io/test_page/heatmap_3.html">Mappa 3</option>
-    <option value="https://gabrielepiccoli.github.io/test_page/heatmap.html">Mappa 4</option>
-    <option value="https://lookerstudio.google.com/embed/reporting/b54a3a10-5148-4dc7-bd08-2b7140fa78aa/page/mS6HF">Grafico 1</option>
-    <option value="https://lookerstudio.google.com/embed/reporting/321f4b6a-079b-459b-a979-d164dd48aa71/page/mS6HF">Grafico 2</option>
-    <option value="https://lookerstudio.google.com/embed/reporting/321f4b6a-079b-459b-a979-d164dd48aa71/page/mS6HF">Grafico 3</option>
-    <option value="https://lookerstudio.google.com/embed/reporting/c6b9be92-3896-4370-a2fc-06a4150f350a/page/mS6HF">Grafico 4</option>
+    <!-- Le opzioni verranno aggiunte dinamicamente qui -->
   </select>
 
   <div class="map-container">
@@ -41,9 +34,42 @@
   </div>
 
   <script>
-    document.getElementById("mapSelect").addEventListener("change", function() {
-      document.getElementById("mapFrame").src = this.value;
-    });
+    const mapOptions = [
+      { name: "Mappa 1", url: "https://gabrielepiccoli.github.io/test_page/heatmap_1.html" },
+      { name: "Mappa 2", url: "https://gabrielepiccoli.github.io/test_page/heatmap_2.html" },
+      { name: "Mappa 3", url: "https://gabrielepiccoli.github.io/test_page/heatmap_3.html" },
+      { name: "Mappa 4", url: "https://gabrielepiccoli.github.io/test_page/heatmap.html" },
+      { name: "Grafico 1", url: "https://lookerstudio.google.com/embed/reporting/b54a3a10-5148-4dc7-bd08-2b7140fa78aa/page/mS6HF"},
+      { name: "Grafico 2", url: "https://lookerstudio.google.com/embed/reporting/321f4b6a-079b-459b-a979-d164dd48aa71/page/mS6HF" },
+      { name: "Grafico 3", url: "https://lookerstudio.google.com/embed/reporting/40fa0638-a0dd-4fea-b7e8-049a73a8ae49/page/mS6HF" },
+      { name: "Grafico 4", url: "https://lookerstudio.google.com/embed/reporting/c6b9be92-3896-4370-a2fc-06a4150f350a/page/mS6HF" },
+    ];
+    function getMapIndexFromURL() {
+    const params = new URLSearchParams(window.location.search);
+    const index = parseInt(params.get("map")) || 0;
+    return Math.max(0, Math.min(index, mapOptions.length - 1));
+  }
+
+  const mapIndex = getMapIndexFromURL();
+  const iframe = document.getElementById("mapFrame");
+  const select = document.getElementById("mapSelect");
+
+  // Popola il dropdown
+  mapOptions.forEach((opt, idx) => {
+    const option = document.createElement("option");
+    option.value = opt.url;
+    option.textContent = opt.name;
+    if (idx === mapIndex) option.selected = true;
+    select.appendChild(option);
+  });
+
+  // Imposta iframe iniziale
+  iframe.src = mapOptions[mapIndex].url;
+
+  // Cambia mappa al cambio selezione
+  select.addEventListener("change", () => {
+    iframe.src = select.value;
+  });
   </script>
 </body>
 </html>
