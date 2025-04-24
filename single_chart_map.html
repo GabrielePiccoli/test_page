@@ -69,6 +69,7 @@
   // Cambia mappa al cambio selezione
   select.addEventListener("change", () => {
     iframe.src = select.value;
+    iframe.scrolling = "no";
   });
   </script>
 </body>
