@@ -17,7 +17,7 @@
       border: none;
     }
     select {
-      width: 100%;
+      /*width: 100%;*/
       font-size: 16px;
       padding: 8px;
       margin-bottom: 10px;
@@ -25,24 +25,33 @@
   </style>
 </head>
 <body>
-  <select id="mapSelect">
-    <!-- Le opzioni verranno aggiunte dinamicamente qui -->
-  </select>
+  <div id="selectWrapper" style="display: flex; gap: 1%; width: 100%;">
+    <select id="mapSelect">
+      <!-- Le opzioni verranno aggiunte dinamicamente qui -->
+    </select>
+
+    <select id="timeSelect">
+      <option value = "0" default>Current</option>
+      <option value = "1">One step ahead</option>
+      <option value = "2">Two steps ahead</option>
+      <option value = "3">Three steps ahead</option>
+    </select>
+  </div>
 
   <div class="map-container">
-    <iframe id="mapFrame" src="https://gabrielepiccoli.github.io/test_page/heatmap_1.html" scrolling="no"></iframe>
+    <iframe id="mapFrame" scrolling="no"></iframe>
   </div>
 
   <script>
     const mapOptions = [
-      { name: "Mappa 1", url: "https://gabrielepiccoli.github.io/test_page/heatmap_1.html" },
-      { name: "Mappa 2", url: "https://gabrielepiccoli.github.io/test_page/heatmap_2.html" },
-      { name: "Mappa 3", url: "https://gabrielepiccoli.github.io/test_page/heatmap_3.html" },
-      { name: "Mappa 4", url: "https://gabrielepiccoli.github.io/test_page/heatmap.html" },
-      { name: "Grafico 1", url: "https://lookerstudio.google.com/embed/reporting/b54a3a10-5148-4dc7-bd08-2b7140fa78aa/page/mS6HF"},
-      { name: "Grafico 2", url: "https://lookerstudio.google.com/embed/reporting/321f4b6a-079b-459b-a979-d164dd48aa71/page/mS6HF" },
-      { name: "Grafico 3", url: "https://lookerstudio.google.com/embed/reporting/40fa0638-a0dd-4fea-b7e8-049a73a8ae49/page/mS6HF" },
-      { name: "Grafico 4", url: "https://lookerstudio.google.com/embed/reporting/c6b9be92-3896-4370-a2fc-06a4150f350a/page/mS6HF" },
+      { name: "Mappa 1", url: "https://gabrielepiccoli.github.io/test_page/heatmap_1", type:"map" },
+      { name: "Mappa 2", url: "https://gabrielepiccoli.github.io/test_page/heatmap_2", type:"map" },
+      { name: "Mappa 3", url: "https://gabrielepiccoli.github.io/test_page/heatmap_3", type:"map" },
+      { name: "Mappa 4", url: "https://gabrielepiccoli.github.io/test_page/heatmap_4", type:"map" },
+      { name: "Grafico 1", url: "https://lookerstudio.google.com/embed/reporting/b54a3a10-5148-4dc7-bd08-2b7140fa78aa/page/mS6HF", type:"chart" },
+      { name: "Grafico 2", url: "https://lookerstudio.google.com/embed/reporting/321f4b6a-079b-459b-a979-d164dd48aa71/page/mS6HF", type:"chart" },
+      { name: "Grafico 3", url: "https://lookerstudio.google.com/embed/reporting/40fa0638-a0dd-4fea-b7e8-049a73a8ae49/page/mS6HF", type:"chart" },
+      { name: "Grafico 4", url: "https://lookerstudio.google.com/embed/reporting/c6b9be92-3896-4370-a2fc-06a4150f350a/page/mS6HF", type:"chart" },
     ];
     function getMapIndexFromURL() {
     const params = new URLSearchParams(window.location.search);
@@ -59,18 +68,45 @@
     const option = document.createElement("option");
     option.value = opt.url;
     option.textContent = opt.name;
+    option.setAttribute("data-type", opt.type);
     if (idx === mapIndex) option.selected = true;
     select.appendChild(option);
   });
 
   // Imposta iframe iniziale
   iframe.src = mapOptions[mapIndex].url;
-
+  adaptSelect()
   // Cambia mappa al cambio selezione
   select.addEventListener("change", () => {
-    iframe.src = select.value;
+    iframe.src = set_url(select.value, select.options[select.selectedIndex].getAttribute("data-type"));
     iframe.scrolling = "no";
+    adaptSelect()
   });
+
+  function adaptSelect(){
+    const selectedOption = select.options[select.selectedIndex];
+    const selectedType = selectedOption.getAttribute("data-type");
+
+    if (selectedType === "map") {
+      document.getElementById("mapSelect").style.width = "70%";
+      document.getElementById("timeSelect").style.display = "block";
+      document.getElementById("timeSelect").style.width = "30%";
+    } else {
+      document.getElementById("mapSelect").style.width = "100%";
+      document.getElementById("timeSelect").style.display = "none";
+    }
+  }
+
+  function set_url(base_url, selectedType){
+    if (selectedType === "map") {
+      const timeSelect = document.getElementById("timeSelect").value;
+      console.log(base_url)
+      url = base_url + "_" + timeSelect + ".html";
+    }else{
+      url = base_url + ".html";
+    }
+    return url
+  }
   </script>
 </body>
 </html>
