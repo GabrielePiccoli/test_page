@@ -50,7 +50,7 @@
           <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
           <script>
             // Imposta il centro della mappa sul centro dei dati
-            var map = L.map('map', {center:[52.41771715, 12.757408999999999], zoom:13, zoomControl: false, dragging: false, scrollWheelZoom: false, touchZoom: false,boxZoom: false,doubleClickZoom: false});
+            var map = L.map('map', {center:[52.41771715, 12.757408999999999], zoomControl: false, dragging: false, scrollWheelZoom: false, touchZoom: false,boxZoom: false,doubleClickZoom: false});
 
             // Aggiungi i tile di OpenStreetMap
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
@@ -62,10 +62,16 @@
             var rect4 = [[52.41771715, 12.757408999999999], [52.41771715, 12.765038], [52.4254093, 12.765038], [52.4254093, 12.757408999999999]];
 
             // Aggiungi i rettangoli alla mappa con il colore determinato
-            L.polygon(rect1, {color: '#FB8767', weight: 1, fillOpacity: 0.4}).addTo(map);
-            L.polygon(rect2, {color: '#FCC2AB', weight: 1, fillOpacity: 0.4}).addTo(map);
-            L.polygon(rect3, {color: '#F7FBFF', weight: 1, fillOpacity: 0.4}).addTo(map);
-            L.polygon(rect4, {color: '#FB6D4D', weight: 1, fillOpacity: 0.4}).addTo(map);
+            var polygon1 = L.polygon(rect1, {color: '#FB8767', weight: 1, fillOpacity: 0.4}).addTo(map);
+            var polygon2 = L.polygon(rect2, {color: '#FCC2AB', weight: 1, fillOpacity: 0.4}).addTo(map);
+            var polygon3 = L.polygon(rect3, {color: '#F7FBFF', weight: 1, fillOpacity: 0.4}).addTo(map);
+            var polygon4 = L.polygon(rect4, {color: '#FB6D4D', weight: 1, fillOpacity: 0.4}).addTo(map);
+
+            // Aggiungi tooltips (appariranno quando l'utente passa sopra i rettangoli)
+            polygon1.bindTooltip("Valore: 71.0", {permanent: false, direction: 'center'}).openTooltip();
+            polygon2.bindTooltip("Valore: 62.0", {permanent: false, direction: 'center'}).openTooltip();
+            polygon3.bindTooltip("Valore: 1.0", {permanent: false, direction: 'center'}).openTooltip();
+            polygon4.bindTooltip("Valore: 75.0", {permanent: false, direction: 'center'}).openTooltip();
 
             // Imposta i limiti della mappa
             var bounds = [[52.410025, 12.74978], [52.4254093, 12.765038]];
