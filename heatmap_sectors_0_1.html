@@ -1,0 +1,76 @@
+
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8" />
+          <title>Heatmap con Settori Rettangolari</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <style>
+            #map {
+      height: 98vh;
+    }
+    #legend {
+      position: absolute;
+      bottom: 30px;
+      left: 10px;
+      padding: 5px 10px;
+      background: white;
+      border-radius: 5px;
+      font-family: sans-serif;
+      font-size: 12px;
+      line-height: 1.2;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      height: auto;
+    }
+    .gradient {
+      height: 15px;
+      width: 150px;
+      background: linear-gradient(to right, blue, white, red); /* Il gradiente dal blu al bianco al rosso */
+      margin: 5px 0;
+    }
+    .labels {
+      display: flex;
+      justify-content: space-between;
+    }
+          </style>
+          <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+        </head>
+        <body>
+          <div id="map"></div>
+            <div id="legend">
+              <div class="gradient"></div> <!-- Gradiente da blu a rosso -->
+              <div class="labels">
+                <span>Low</span> <!-- Etichetta per il basso -->
+                <span>Medium</span> <!-- Etichetta per il medio -->
+                <span>High</span> <!-- Etichetta per l'alto -->
+              </div>
+            </div>
+          <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+          <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+          <script>
+            // Imposta il centro della mappa sul centro dei dati
+            var map = L.map('map', {center:[52.41771715, 12.757408999999999], zoom:13, zoomControl: false, dragging: false, scrollWheelZoom: false, touchZoom: false,boxZoom: false,doubleClickZoom: false});
+
+            // Aggiungi i tile di OpenStreetMap
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+            // Definizione dei rettangoli
+            var rect1 = [[52.410025, 12.74978], [52.410025, 12.757408999999999], [52.41771715, 12.757408999999999], [52.41771715, 12.74978]];
+            var rect2 = [[52.410025, 12.765038], [52.410025, 12.757408999999999], [52.41771715, 12.757408999999999], [52.41771715, 12.765038]];
+            var rect3 = [[52.4254093, 12.74978], [52.41771715, 12.74978], [52.41771715, 12.757408999999999], [52.4254093, 12.757408999999999]];
+            var rect4 = [[52.41771715, 12.757408999999999], [52.41771715, 12.765038], [52.4254093, 12.765038], [52.4254093, 12.757408999999999]];
+
+            // Aggiungi i rettangoli alla mappa con il colore determinato
+            L.polygon(rect1, {color: '#88BEDC', weight: 1, fillOpacity: 0.4}).addTo(map);
+            L.polygon(rect2, {color: '#8D0912', weight: 1, fillOpacity: 0.4}).addTo(map);
+            L.polygon(rect3, {color: '#FC9474', weight: 1, fillOpacity: 0.4}).addTo(map);
+            L.polygon(rect4, {color: '#083572', weight: 1, fillOpacity: 0.4}).addTo(map);
+
+            // Imposta i limiti della mappa
+            var bounds = [[52.410025, 12.74978], [52.4254093, 12.765038]];
+            map.fitBounds(bounds);
+          </script>
+        </body>
+        </html>
+        
