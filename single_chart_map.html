@@ -75,55 +75,39 @@
       <select id="mapSelect">
         <!-- Le opzioni verranno aggiunte dinamicamente qui -->
       </select>
-
+    
       <select id="timeSelect" class="topbar">
         <option value="0" selected>Current</option>
         <option value="1">One step ahead</option>
         <option value="2">Two steps ahead</option>
         <option value="3">Three steps ahead</option>
       </select>
-
+    
       <button class="topbar">Info</button>
     </div>
-    <div id="infoBox" style="
-      display: none;
-      position: absolute;
-      top: 70px;
-      right: 20px;
-      padding: 16px;
-      background-color: #ffffff;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      max-width: 300px;
-      z-index: 1000;
-    ">
+    
+    <div id="infoBox" style="display: none; position: absolute; top: 70px; right: 20px; padding: 16px; background-color: #ffffff; border: 1px solid #ccc; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); max-width: 300px; z-index: 1000;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <strong>Informazioni</strong>
-        <button id="closeInfoBox" style="
-          background: none;
-          border: none;
-          font-size: 16px;
-          cursor: pointer;
-          color: #888;
-        ">✖</button>
+        <button id="closeInfoBox" style="background: none; border: none; font-size: 16px; cursor: pointer; color: #888;">✖</button>
       </div>
       <div id="infoContent" style="margin-top: 10px;"></div>
     </div>
-
-
-
+    
     <div class="map-container">
       <iframe id="mapFrame" scrolling="no"></iframe>
     </div>
 
   <script>
+
+    const src = "https://gabrielepiccoli.github.io/test_page/"; // Sostituisci con il tuo URL
+
     //Gestione bottone info
     document.querySelector('button.topbar').addEventListener('click', function () {
-    this.blur(); // Rimuove il focus per evitare stili indesiderati
+      this.blur(); // Rimuove il focus per evitare stili indesiderati
     });
 
-    const SHEET_URL = "https://api.sheetbest.com/sheets/d62ef41b-ae24-447d-9ba5-9a446644eb5a/tabs/Foglio7";
+    const SHEET_URL = src + "grafici.json";
     const button = document.querySelector('button.topbar');
     const infoBox = document.getElementById('infoBox');
     const closeBtn = document.getElementById('closeInfoBox');
@@ -131,8 +115,7 @@
     const mapSelect = document.getElementById('mapSelect');
     const stepSelect = document.getElementById('timeSelect');
 
-    
-        async function caricaDatiGrafici() {
+    async function caricaDatiGrafici() {
       const res = await fetch(SHEET_URL);
       const dati = await res.json();
       const graficiInfo = {};
@@ -154,10 +137,9 @@
     button.addEventListener('click', async () => {
       const selectedGrafico = mapSelect.value;  // valore del grafico (es. grafico1)
       const selectedTime = stepSelect.value;    // valore del timeSelect (0, 1, 2, 3)
-      console.log(selectedGrafico, selectedTime)
       const graficiInfo = await caricaDatiGrafici();
       const data = graficiInfo[selectedGrafico] ? graficiInfo[selectedGrafico][selectedTime] : null;
-      console.log(data)
+
       if (!data) {
         infoContent.innerHTML = "<p>Nessuna informazione disponibile per questa combinazione.</p>";
       } else {
@@ -168,8 +150,14 @@
         `;
       }
 
-      infoBox.style.display = 'block';
+      infoBox.style.display = 'block'; // Mostra l'infobox
     });
+
+    // Aggiungi l'event listener per la chiusura dell'infobox
+    closeBtn.addEventListener('click', () => {
+      infoBox.style.display = 'none'; // Nasconde l'infobox
+    });
+
 
 
     // Gestione iframe e selezione
@@ -213,12 +201,14 @@
     iframe.src = set_url(select.value, select.options[select.selectedIndex].getAttribute("data-type"));
     iframe.scrolling = "no";
     adaptSelect()
+    infoBox.style.display = 'none';
   });
 
   timeSelect.addEventListener("change", () =>{
       iframe.src = set_url(select.value, select.options[select.selectedIndex].getAttribute("data-type"));
       iframe.scrolling = "no";
       adaptSelect()
+      infoBox.style.display = 'none';
   });
 
   function adaptSelect(){
@@ -237,14 +227,12 @@
   }
 
   function set_url(base_url, selectedType){
-    const src = "https://gabrielepiccoli.github.io/test_page/"
     if (selectedType === "map") {
       const selectedTime = timeSelect.value;
       url = src + base_url + "_" + selectedTime + ".html";
     }else{
       url = src + base_url + ".html";
     }
-    console.log(url);
     return url
   }
   </script>
