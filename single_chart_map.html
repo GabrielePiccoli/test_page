@@ -16,33 +16,163 @@
       height: 100%;
       border: none;
     }
-    select {
-      /*width: 100%;*/
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 20px;
+    }
+
+    #selectWrapper {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      max-width: 600px;
+      margin: auto;
+      padding: 16px;
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    select, button {
       font-size: 16px;
-      padding: 8px;
-      margin-bottom: 10px;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background-color: #f0f0f0;
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    select:focus, button:focus {
+      outline: none;
+      border-color: #007BFF;
+      background-color: #e6f0ff;
+    }
+
+    button {
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      cursor: pointer;
+      min-width: 80px;
+      opacity: 1;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+    button:focus, button:active {
+      outline: none;
+      background-color: #0056b3; /* stesso colore dell'hover */
+      opacity: 1;
     }
   </style>
-</head>
-<body>
-  <div id="selectWrapper" style="display: flex; gap: 1%; width: 100%;">
-    <select id="mapSelect">
-      <!-- Le opzioni verranno aggiunte dinamicamente qui -->
-    </select>
+  </head>
+  <body>
+    <div id="selectWrapper">
+      <select id="mapSelect">
+        <!-- Le opzioni verranno aggiunte dinamicamente qui -->
+      </select>
 
-    <select id="timeSelect">
-      <option value = "0" default>Current</option>
-      <option value = "1">One step ahead</option>
-      <option value = "2">Two steps ahead</option>
-      <option value = "3">Three steps ahead</option>
-    </select>
-  </div>
+      <select id="timeSelect" class="topbar">
+        <option value="0" selected>Current</option>
+        <option value="1">One step ahead</option>
+        <option value="2">Two steps ahead</option>
+        <option value="3">Three steps ahead</option>
+      </select>
 
-  <div class="map-container">
-    <iframe id="mapFrame" scrolling="no"></iframe>
-  </div>
+      <button class="topbar">Info</button>
+    </div>
+    <div id="infoBox" style="
+      display: none;
+      position: absolute;
+      top: 70px;
+      right: 20px;
+      padding: 16px;
+      background-color: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      max-width: 300px;
+      z-index: 1000;
+    ">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <strong>Informazioni</strong>
+        <button id="closeInfoBox" style="
+          background: none;
+          border: none;
+          font-size: 16px;
+          cursor: pointer;
+          color: #888;
+        ">✖</button>
+      </div>
+      <div id="infoContent" style="margin-top: 10px;"></div>
+    </div>
+
+
+
+    <div class="map-container">
+      <iframe id="mapFrame" scrolling="no"></iframe>
+    </div>
 
   <script>
+    //Gestione bottone info
+    document.querySelector('button.topbar').addEventListener('click', function () {
+    this.blur(); // Rimuove il focus per evitare stili indesiderati
+    });
+
+    const SHEET_URL = "https://api.sheetbest.com/sheets/d62ef41b-ae24-447d-9ba5-9a446644eb5a/tabs/Foglio7";
+    const button = document.querySelector('button.topbar');
+    const infoBox = document.getElementById('infoBox');
+    const closeBtn = document.getElementById('closeInfoBox');
+    const infoContent = document.getElementById('infoContent');
+    const mapSelect = document.getElementById('mapSelect');
+    const stepSelect = document.getElementById('timeSelect');
+
+    
+        async function caricaDatiGrafici() {
+      const res = await fetch(SHEET_URL);
+      const dati = await res.json();
+      const graficiInfo = {};
+
+      // Struttura i dati in modo da avere grafico -> tempo -> parametri (a, b, c)
+      dati.forEach(row => {
+        if (!graficiInfo[row.grafico]) {
+          graficiInfo[row.grafico] = {};
+        }
+        graficiInfo[row.grafico][row.step] = {
+          a: row.a,
+          b: row.b,
+          c: row.c
+        };
+      });
+      return graficiInfo;
+    }
+
+    button.addEventListener('click', async () => {
+      const selectedGrafico = mapSelect.value;  // valore del grafico (es. grafico1)
+      const selectedTime = stepSelect.value;    // valore del timeSelect (0, 1, 2, 3)
+      console.log(selectedGrafico, selectedTime)
+      const graficiInfo = await caricaDatiGrafici();
+      const data = graficiInfo[selectedGrafico] ? graficiInfo[selectedGrafico][selectedTime] : null;
+      console.log(data)
+      if (!data) {
+        infoContent.innerHTML = "<p>Nessuna informazione disponibile per questa combinazione.</p>";
+      } else {
+        infoContent.innerHTML = `
+          <p><strong>a:</strong> ${data.a}</p>
+          <p><strong>b:</strong> ${data.b}</p>
+          <p><strong>c:</strong> ${data.c}</p>
+        `;
+      }
+
+      infoBox.style.display = 'block';
+    });
+
+
+    // Gestione iframe e selezione
     const mapOptions = [
       { name: "Mappa 1", url: "heatmap_sectors_0", type:"map" },
       { name: "Mappa 2", url: "heatmap_sectors_1", type:"map" },
@@ -96,12 +226,13 @@
     const selectedType = selectedOption.getAttribute("data-type");
 
     if (selectedType === "map") {
-      select.style.width = "70%";
+      select.style.width = "60%";
       timeSelect.style.display = "block";
       timeSelect.style.width = "30%";
     } else {
-      select.style.width = "100%";
+      select.style.width = "90%";
       timeSelect.style.display = "none";
+      timeSelect.value = 0;
     }
   }
 
