@@ -1,3 +1,5 @@
-*.json
+credentials.json
+token.json
+tasks.json
 upload_data.ipynb
 plot_charts.ipynb
