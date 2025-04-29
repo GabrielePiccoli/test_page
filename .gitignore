@@ -1,5 +1,5 @@
 credentials.json
 token.json
 tasks.json
-upload_data.ipynb
-plot_charts.ipynb
+00_generate_charts.ipynb
+00_plot_charts.ipynb
