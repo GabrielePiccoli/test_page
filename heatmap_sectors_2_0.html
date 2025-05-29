@@ -50,31 +50,31 @@
           <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
           <script>
             // Imposta il centro della mappa sul centro dei dati
-            var map = L.map('map', {center:[52.41771715, 12.757408999999999], zoomControl: false, dragging: false, scrollWheelZoom: false, touchZoom: false,boxZoom: false,doubleClickZoom: false});
+            var map = L.map('map', {center:[52.413184, 12.751095921686748], zoomControl: false, dragging: false, scrollWheelZoom: false, touchZoom: false,boxZoom: false,doubleClickZoom: false});
 
             // Aggiungi i tile di OpenStreetMap
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
             // Definizione dei rettangoli
-            var rect1 = [[52.410025, 12.74978], [52.410025, 12.757408999999999], [52.41771715, 12.757408999999999], [52.41771715, 12.74978]];
-            var rect2 = [[52.410025, 12.765038], [52.410025, 12.757408999999999], [52.41771715, 12.757408999999999], [52.41771715, 12.765038]];
-            var rect3 = [[52.4254093, 12.74978], [52.41771715, 12.74978], [52.41771715, 12.757408999999999], [52.4254093, 12.757408999999999]];
-            var rect4 = [[52.41771715, 12.757408999999999], [52.41771715, 12.765038], [52.4254093, 12.765038], [52.4254093, 12.757408999999999]];
+            var rect1 = [[52.413184, 12.750882], [52.413184, 12.750953307228915], [52.413184, 12.751095921686748], [52.413184, 12.751024614457833]];
+            var rect2 = [[52.413184, 12.751024614457831], [52.413184, 12.750953307228915], [52.413184, 12.751095921686748], [52.413184, 12.751167228915664]];
+            var rect3 = [[52.413184, 12.751167228915664], [52.413184, 12.751024614457833], [52.413184, 12.751095921686748], [52.413184, 12.75123853614458]];
+            var rect4 = [[52.413184, 12.751095921686748], [52.413184, 12.751167228915664], [52.413184, 12.751309843373496], [52.413184, 12.75123853614458]];
 
             // Aggiungi i rettangoli alla mappa con il colore determinato
-            var polygon1 = L.polygon(rect1, {color: '#A0CAE1', weight: 1, fillOpacity: 0.4}).addTo(map);
-            var polygon2 = L.polygon(rect2, {color: '#67ABD4', weight: 1, fillOpacity: 0.4}).addTo(map);
-            var polygon3 = L.polygon(rect3, {color: '#D2E3F3', weight: 1, fillOpacity: 0.4}).addTo(map);
-            var polygon4 = L.polygon(rect4, {color: '#DEEBF7', weight: 1, fillOpacity: 0.4}).addTo(map);
+            var polygon1 = L.polygon(rect1, {color: '#08306B', weight: 1, fillOpacity: 0.4}).addTo(map);
+            var polygon2 = L.polygon(rect2, {color: '#08306B', weight: 1, fillOpacity: 0.4}).addTo(map);
+            var polygon3 = L.polygon(rect3, {color: '#08306B', weight: 1, fillOpacity: 0.4}).addTo(map);
+            var polygon4 = L.polygon(rect4, {color: '#08306B', weight: 1, fillOpacity: 0.4}).addTo(map);
 
             // Aggiungi tooltips (appariranno quando l'utente passa sopra i rettangoli)
-            polygon1.bindTooltip("Valore: 32.0", {permanent: false, direction: 'center'}).openTooltip();
-            polygon2.bindTooltip("Valore: 25.0", {permanent: false, direction: 'center'}).openTooltip();
-            polygon3.bindTooltip("Valore: 41.0", {permanent: false, direction: 'center'}).openTooltip();
-            polygon4.bindTooltip("Valore: 44.0", {permanent: false, direction: 'center'}).openTooltip();
+            polygon1.bindTooltip("Valore: 0.0", {permanent: false, direction: 'center'}).openTooltip();
+            polygon2.bindTooltip("Valore: 0.0", {permanent: false, direction: 'center'}).openTooltip();
+            polygon3.bindTooltip("Valore: 0.0", {permanent: false, direction: 'center'}).openTooltip();
+            polygon4.bindTooltip("Valore: 0.0", {permanent: false, direction: 'center'}).openTooltip();
 
             // Imposta i limiti della mappa
-            var bounds = [[52.410025, 12.74978], [52.4254093, 12.765038]];
+            var bounds = [[52.413184, 12.750882], [52.422736, 12.762719]];
             map.fitBounds(bounds);
           </script>
         </body>
