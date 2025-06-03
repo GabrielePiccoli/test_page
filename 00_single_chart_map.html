@@ -87,7 +87,7 @@
     
     <div id="infoBox" style="display: none; position: absolute; top: 70px; right: 20px; padding: 16px; background-color: #ffffff; border: 1px solid #ccc; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); max-width: 300px; z-index: 1000;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
-        <strong>Informazioni</strong>
+        <strong>Statistical info</strong>
         <button id="closeInfoBox" style="background: none; border: none; font-size: 16px; cursor: pointer; color: #888;">✖</button>
       </div>
       <div id="infoContent" style="margin-top: 10px;"></div>
@@ -140,12 +140,12 @@
       const data = graficiInfo[selectedGrafico] ? graficiInfo[selectedGrafico][selectedTime] : null;
 
       if (!data) {
-        infoContent.innerHTML = "<p>Nessuna informazione disponibile per questa combinazione.</p>";
+        infoContent.innerHTML = "<p>No statistical info for this prediction.</p>";
       } else {
         infoContent.innerHTML = `
-          <p><strong>a:</strong> ${data.a}</p>
-          <p><strong>b:</strong> ${data.b}</p>
-          <p><strong>c:</strong> ${data.c}</p>
+          <p><strong>MAE:</strong> ${data.a}</p>
+          <p><strong>NMAE:</strong> ${data.b}</p>
+          <p><strong>Correlation:</strong> ${data.c}</p>
         `;
       }
 
@@ -159,10 +159,10 @@
 
     // Gestione iframe e selezione
     const mapOptions = [
-      { name: "Mappa 1", url: "heatmap_sectors_0", type:"map" },
-      { name: "Mappa 2", url: "heatmap_sectors_1", type:"map" },
-      { name: "Mappa 3", url: "heatmap_sectors_2", type:"map" },
-      { name: "Mappa 4", url: "heatmap_sectors_3", type:"map" },
+      { name: "Map 1", url: "heatmap_sectors_0", type:"map" },
+      { name: "Map 2", url: "heatmap_sectors_1", type:"map" },
+      { name: "Map 3", url: "heatmap_sectors_2", type:"map" },
+      { name: "Map 4", url: "heatmap_sectors_3", type:"map" },
       { name: "Dew point mean", url: "dew_point_mean", type:"chart" },
       { name: "PI54D mean", url: "pi54d_mean", type:"chart" },
       { name: "PI54D perm mean", url: "pi54d_perm_mean", type:"chart" },
@@ -171,8 +171,8 @@
     ];
     function getMapIndexFromURL() {
     const params = new URLSearchParams(window.location.search);
-    const index = parseInt(params.get("map")) || 0;
-    return Math.max(0, Math.min(index, mapOptions.length - 1));
+    const index = parseInt(params.get("map")) || "0";
+    return Math.max("0", Math.min(index, mapOptions.length - 1));
   }
 
   const mapIndex = getMapIndexFromURL();
@@ -195,7 +195,7 @@
   adaptSelect()
   // Cambia mappa al cambio selezione
   select.addEventListener("change", () => {
-    timeSelect.value = 0
+    timeSelect.value = "0"
     iframe.src = set_url(select.value, select.options[select.selectedIndex].getAttribute("data-type"));
     iframe.scrolling = "no";
     adaptSelect()
@@ -220,7 +220,7 @@
     } else {
       select.style.width = "90%";
       timeSelect.style.display = "none";
-      timeSelect.value = 0;
+      timeSelect.value = "0";
     }
   }
 
