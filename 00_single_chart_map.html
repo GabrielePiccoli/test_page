@@ -98,8 +98,8 @@
     </div>
 
   <script>
-
-    const src = "https://gabrielepiccoli.github.io/test_page/"; // Sostituisci con il tuo URL
+    const src = "https://drive.google.com/file/d/"
+    //const src = "https://gabrielepiccoli.github.io/test_page/"; // Sostituisci con il tuo URL
 
     //Gestione bottone info
     document.querySelector('button.topbar').addEventListener('click', function () {
@@ -157,11 +157,9 @@
       infoBox.style.display = 'none'; // Nasconde l'infobox
     });
 
-
-
     // Gestione iframe e selezione
     const mapOptions = [
-      { name: "Mappa 1", url: "heatmap_sectors_0", type:"map" },
+      { name: "Mappa 1", url: "1mTj44xI1XujyNVwJGfY3myGlyGYvBsVQ", type:"map" },
       { name: "Mappa 2", url: "heatmap_sectors_1", type:"map" },
       { name: "Mappa 3", url: "heatmap_sectors_2", type:"map" },
       { name: "Mappa 4", url: "heatmap_sectors_3", type:"map" },
@@ -229,7 +227,7 @@
   function set_url(base_url, selectedType){
     if (selectedType === "map") {
       const selectedTime = timeSelect.value;
-      url = src + base_url + "_" + selectedTime + ".html";
+      url = src + base_url + "/view?usp=drive_link";
     }else{
       url = src + base_url + ".html";
     }
