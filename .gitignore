@@ -7,3 +7,6 @@ tasks.json
 node*
 *plain.html
 decipher.html
+data/*
+*py
+*ipynb

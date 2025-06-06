@@ -30,11 +30,11 @@ def cipher(html, filename, password = def_pwd):
     <html>
     <head>
     <meta charset="utf-8" />
-    <title>Pagina protetta</title>
+    <title>Ciphered page</title>
     <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.1.1/crypto-js.min.js"></script>
     </head>
     <body>
-    <p style="font-family:sans-serif;">🔐 Decrittazione in corso...</p>
+    <p style="font-family:sans-serif;">🔐 Anauthorized access: content locked</p>
     <script>
         const ed = {{
             iv: "{data['iv']}",
@@ -47,10 +47,10 @@ def cipher(html, filename, password = def_pwd):
                 const iv = CryptoJS.enc.Base64.parse(ed.iv);
                 const decrypted = CryptoJS.AES.decrypt(ed.ciphertext, key, {{ iv: iv, mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7 }});
                 const result = decrypted.toString(CryptoJS.enc.Utf8);
-                if (!result) throw new Error("Chiave errata");
+                if (!result) throw new Error("Wrong key or corrupted data");
                 document.open(); document.write(result); document.close();
             }} catch (e) {{
-                document.body.innerHTML = "<p style='color:red;font-family:sans-serif;'>❌ Decrittazione fallita: " + e.message + "</p>";
+                document.body.innerHTML = "<p style='color:red;font-family:sans-serif;'>❌ Deciphering failed: " + e.message + "</p>";
             }}
         }}
 
@@ -74,4 +74,4 @@ def cipher(html, filename, password = def_pwd):
     with open(filename, "w", encoding="utf-8") as f:
         f.write(encrypted_html)
 
-    print(f"🔐 Pagina protetta generata come {filename}! (autodecrittabile con chiave)")
+    print(f"🔐 Ciphered html saved: {filename}!")
