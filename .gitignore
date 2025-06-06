@@ -1,10 +1,6 @@
-credentials.json
-token.json
+google*/*
 tasks.json
-00_generate_charts.ipynb
-00_plot_charts.ipynb
 .env
-node*
 *plain.html
 decipher.html
 data/*
