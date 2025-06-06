@@ -6,3 +6,4 @@ tasks.json
 .env
 node*
 *plain.html
+decipher.html
