@@ -3,5 +3,6 @@ token.json
 tasks.json
 00_generate_charts.ipynb
 00_plot_charts.ipynb
-
+.env
 node*
+*plain.html
